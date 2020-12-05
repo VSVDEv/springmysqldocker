@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  mysql-service:
+    image: mysql:5.7
+    networks:
+      - sprmysqldock.jar
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=sa
+      - MYSQL_PASSWORD=pass
+  web-service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8088:8088"
+    networks:
+      - sprmysqldock.jar
+    depends_on:
+      - mysql-service
+networks:
+  sprmysqldock.jar:
+    driver: bridge
